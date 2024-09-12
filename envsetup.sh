@@ -504,6 +504,8 @@ function _lunch_meat()
     local release=$2
     local variant=$3
 
+    check_product $product
+
     TARGET_PRODUCT=$product \
     TARGET_RELEASE=$release \
     TARGET_BUILD_VARIANT=$variant \
@@ -523,6 +525,8 @@ function _lunch_meat()
     export TARGET_BUILD_TYPE=release
 
     [[ -n "${ANDROID_QUIET_BUILD:-}" ]] || echo
+
+    fixup_common_out_dir
 
     set_stuff_for_environment
     [[ -n "${ANDROID_QUIET_BUILD:-}" ]] || printconfig
@@ -813,6 +817,13 @@ function croot()
     else
         echo "Couldn't locate the top of the tree.  Try setting TOP."
     fi
+    if (echo -n $1 | grep -q -e "^aosp_") ; then
+        AOSPENHANCED_BUILD=$(echo -n $1 | sed -e 's/^aosp_//g')
+    else
+        AOSPENHANCED_BUILD=
+    fi
+    export AOSPENHANCED_BUILD
+
 }
 
 function _croot()
