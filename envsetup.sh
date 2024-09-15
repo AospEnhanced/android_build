@@ -504,7 +504,7 @@ function _lunch_meat()
     local release=$2
     local variant=$3
 
-    check_product $product
+    croot $product
 
     TARGET_PRODUCT=$product \
     TARGET_RELEASE=$release \
